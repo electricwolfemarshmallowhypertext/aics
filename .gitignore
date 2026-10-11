@@ -1,0 +1,12 @@
+/TODO.md
+/tech-map
+/tech-map.md
+__pycache__/
+*.pyc
+/.relay/
+
+# Generated test workspaces; retain local receipts and verification files.
+/tests/*-run*/
+/tests/corpus-audit-*/
+/tests/corpus-bugfix-*/
+/tests/corpus-feature-*/

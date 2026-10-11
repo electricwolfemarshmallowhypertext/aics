@@ -1,0 +1,374 @@
+{
+  "target": 20,
+  "inspected_real_receipts": 24,
+  "completed_task_relays": 17,
+  "failed_task_relays": 7,
+  "pending_task_relays": 0,
+  "gate_passed": true,
+  "runs": [
+    {
+      "workspace": "/mnt/e/aics/tests/live-relay-run-1791578191868102639",
+      "status": "completed_task_relays",
+      "real_relays": 1,
+      "session_ids": [
+        "01a12261-bbf8-7ca3-970b-1484705c3176"
+      ],
+      "acceptance": {
+        "passed": true,
+        "real_relays": 1,
+        "completed_items": 24,
+        "checkpoint_item_order": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "all_results_correct_when_sorted": true,
+        "sessions": [
+          {
+            "id": "01a12264-bc79-7701-a45d-3c62e7a17f74",
+            "path": "/home/tionn/.codex/sessions/2026/10/09/rollout-2026-10-09T15-39-49-01a12264-bc79-7701-a45d-3c62e7a17f74.jsonl"
+          },
+          {
+            "id": "01a12261-bbf8-7ca3-970b-1484705c3176",
+            "path": "/home/tionn/.codex/sessions/2026/10/09/rollout-2026-10-09T15-36-32-01a12261-bbf8-7ca3-970b-1484705c3176.jsonl"
+          },
+          {
+            "id": "01a12264-a4f7-7290-ac38-3703142574ef",
+            "path": "/home/tionn/.codex/sessions/2026/10/09/rollout-2026-10-09T15-39-43-01a12264-a4f7-7290-ac38-3703142574ef.jsonl"
+          }
+        ]
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/live-relay-run-1791582007301553172",
+      "status": "completed_task_relays",
+      "real_relays": 1,
+      "session_ids": [
+        "01a1229b-f372-7770-8c7f-97d45ca0c11e"
+      ],
+      "acceptance": {
+        "passed": true,
+        "real_relays": 1,
+        "completed_items": 24,
+        "checkpoint_item_order": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "all_results_correct_when_sorted": true,
+        "sessions": [
+          {
+            "id": "01a1229b-f372-7770-8c7f-97d45ca0c11e",
+            "path": "/home/tionn/.codex/sessions/2026/10/09/rollout-2026-10-09T16-40-08-01a1229b-f372-7770-8c7f-97d45ca0c11e.jsonl"
+          },
+          {
+            "id": "01a1229e-2bf8-73c1-b641-5f226e449ce1",
+            "path": "/home/tionn/.codex/sessions/2026/10/09/rollout-2026-10-09T16-42-33-01a1229e-2bf8-73c1-b641-5f226e449ce1.jsonl"
+          },
+          {
+            "id": "01a1229e-425b-7d81-8ee4-554cb660cc69",
+            "path": "/home/tionn/.codex/sessions/2026/10/09/rollout-2026-10-09T16-42-39-01a1229e-425b-7d81-8ee4-554cb660cc69.jsonl"
+          }
+        ]
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791582566160668937",
+      "status": "failed_task_relays",
+      "real_relays": 0,
+      "session_ids": [],
+      "acceptance": {
+        "passed": false,
+        "workload": "audit",
+        "real_relays": 0,
+        "error": "Agent stopped before completion and before occupancy trigger"
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791582742555285046",
+      "status": "completed_task_relays",
+      "real_relays": 2,
+      "session_ids": [
+        "01a122a7-2fec-7d00-bcf9-62a2f5fb809b",
+        "01a122ab-c5c3-7721-a155-42635edfef13"
+      ],
+      "acceptance": {
+        "passed": true,
+        "workload": "audit",
+        "real_relays": 2,
+        "completed_cases": 32,
+        "receipt_sessions": [
+          "01a122a7-2fec-7d00-bcf9-62a2f5fb809b",
+          "01a122ab-c5c3-7721-a155-42635edfef13"
+        ]
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791583315689242745",
+      "status": "completed_task_relays",
+      "real_relays": 1,
+      "session_ids": [
+        "01a122af-e9be-75b1-8ef0-f7df1107de6d"
+      ],
+      "acceptance": {
+        "passed": true,
+        "workload": "audit",
+        "real_relays": 1,
+        "completed_cases": 32,
+        "receipt_sessions": [
+          "01a122af-e9be-75b1-8ef0-f7df1107de6d"
+        ]
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791583397575616297",
+      "status": "completed_task_relays",
+      "real_relays": 2,
+      "session_ids": [
+        "01a122b1-2dac-7d11-b4d8-7fc33d78cb9f",
+        "01a122b5-a3af-7841-bc05-fa08494b9406"
+      ],
+      "acceptance": {
+        "passed": true,
+        "workload": "audit",
+        "real_relays": 2,
+        "completed_cases": 32,
+        "receipt_sessions": [
+          "01a122b1-2dac-7d11-b4d8-7fc33d78cb9f",
+          "01a122b5-a3af-7841-bc05-fa08494b9406"
+        ]
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791583523914242721",
+      "status": "completed_task_relays",
+      "real_relays": 2,
+      "session_ids": [
+        "01a122b3-17af-71d2-8621-69adf593951d",
+        "01a122b6-4c3f-7063-8bcf-1b8c66bb0ebf"
+      ],
+      "acceptance": {
+        "passed": true,
+        "workload": "audit",
+        "real_relays": 2,
+        "completed_cases": 32,
+        "receipt_sessions": [
+          "01a122b3-17af-71d2-8621-69adf593951d",
+          "01a122b6-4c3f-7063-8bcf-1b8c66bb0ebf"
+        ]
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791583816879346261",
+      "status": "failed_task_relays",
+      "real_relays": 2,
+      "session_ids": [
+        "01a122b7-942b-7a80-a05a-8fba202e0db2",
+        "01a122ba-5529-72a0-a130-c134effb46f3"
+      ],
+      "acceptance": {
+        "passed": false,
+        "workload": "audit",
+        "real_relays": 2,
+        "completed_cases": 35,
+        "receipt_sessions": [
+          "01a122b7-942b-7a80-a05a-8fba202e0db2",
+          "01a122ba-5529-72a0-a130-c134effb46f3"
+        ],
+        "error": "Replacement CLI exited 0 after case 35; cases 36-64 and DONE.txt remain unfinished"
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791583817192364104",
+      "status": "failed_task_relays",
+      "real_relays": 3,
+      "session_ids": [
+        "01a122b7-9446-7583-ac12-8e390ef63af6",
+        "01a122ba-9c3b-73f1-a6b1-dc8c1a5c3289",
+        "01a122be-ddcc-7113-b8a8-90709cfd3f07"
+      ],
+      "acceptance": {
+        "passed": false,
+        "workload": "audit",
+        "real_relays": 3,
+        "completed_cases": 53,
+        "receipt_sessions": [
+          "01a122b7-9446-7583-ac12-8e390ef63af6",
+          "01a122ba-9c3b-73f1-a6b1-dc8c1a5c3289",
+          "01a122be-ddcc-7113-b8a8-90709cfd3f07"
+        ],
+        "error": "Replacement Luna session exited 0 after case 53; cases 54-64 and DONE.txt remain unfinished"
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791583909153404268",
+      "status": "completed_task_relays",
+      "real_relays": 3,
+      "session_ids": [
+        "01a122b8-fa19-7550-8ea7-267d4c0ff5aa",
+        "01a122bb-b626-7082-a5f9-d7b03efb0b9b",
+        "01a122be-9955-76f2-91f1-56865fb46fb2"
+      ],
+      "acceptance": {
+        "passed": true,
+        "workload": "audit",
+        "real_relays": 3,
+        "completed_cases": 48,
+        "receipt_sessions": [
+          "01a122b8-fa19-7550-8ea7-267d4c0ff5aa",
+          "01a122bb-b626-7082-a5f9-d7b03efb0b9b",
+          "01a122be-9955-76f2-91f1-56865fb46fb2"
+        ]
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791584425645921756",
+      "status": "failed_task_relays",
+      "real_relays": 0,
+      "session_ids": [],
+      "acceptance": {
+        "passed": false,
+        "workload": "audit",
+        "real_relays": 0,
+        "completed_cases": 2,
+        "error": "Initial Luna session stopped before any relay; boot-prompt correction was not exercised"
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791584618576889936",
+      "status": "completed_task_relays",
+      "real_relays": 3,
+      "session_ids": [
+        "01a122c3-cea6-73f0-90cd-481a90e564d2",
+        "01a122c6-4ee9-79b0-9112-99300869facf",
+        "01a122c9-6017-7903-ac3a-3bfb6e754bb3"
+      ],
+      "acceptance": {
+        "passed": true,
+        "workload": "audit",
+        "real_relays": 3,
+        "completed_cases": 64,
+        "receipt_sessions": [
+          "01a122c3-cea6-73f0-90cd-481a90e564d2",
+          "01a122c6-4ee9-79b0-9112-99300869facf",
+          "01a122c9-6017-7903-ac3a-3bfb6e754bb3"
+        ]
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-bugfix-1791582564075082747",
+      "status": "failed_task_relays",
+      "real_relays": 0,
+      "session_ids": [],
+      "acceptance": {
+        "passed": false,
+        "workload": "bugfix",
+        "real_relays": 0,
+        "error": "Agent stopped before completion and before occupancy trigger"
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-bugfix-1791582743618492668",
+      "status": "failed_task_relays",
+      "real_relays": 2,
+      "session_ids": [
+        "01a122a7-3117-7671-ba5b-6e0bcac71fba",
+        "01a122ab-cfdd-74b0-a41b-cdb3c861964c"
+      ],
+      "acceptance": {
+        "passed": false,
+        "workload": "bugfix",
+        "real_relays": 2,
+        "completed_cases": 26,
+        "receipt_sessions": [
+          "01a122a7-3117-7671-ba5b-6e0bcac71fba",
+          "01a122ab-cfdd-74b0-a41b-cdb3c861964c"
+        ],
+        "error": "Replacement CLI exited 0 after case 26; cases 27-32 and DONE.txt remain unfinished"
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-feature-1791582565476153458",
+      "status": "failed_task_relays",
+      "real_relays": 0,
+      "session_ids": [],
+      "acceptance": {
+        "passed": false,
+        "workload": "feature",
+        "real_relays": 0,
+        "error": "Agent stopped before completion and before occupancy trigger"
+      }
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-feature-1791582743356991678",
+      "status": "completed_task_relays",
+      "real_relays": 2,
+      "session_ids": [
+        "01a122a7-3057-7f31-8291-5176cbc9860b",
+        "01a122ab-9c57-7cf0-aa08-181d48556846"
+      ],
+      "acceptance": {
+        "passed": true,
+        "workload": "feature",
+        "real_relays": 2,
+        "completed_cases": 32,
+        "receipt_sessions": [
+          "01a122a7-3057-7f31-8291-5176cbc9860b",
+          "01a122ab-9c57-7cf0-aa08-181d48556846"
+        ]
+      }
+    }
+  ],
+  "current_model_validation": {
+    "model": "gpt-6-sol",
+    "workspace": "/mnt/e/aics/tests/corpus-audit-1791584618576889936",
+    "passed": true,
+    "real_relays": 3,
+    "ordered_checkpoints": 64,
+    "final_marker": "CORPUS_COMPLETE",
+    "windows_model_smoke": "MODEL_OK",
+    "summary_policy_verification": "/mnt/e/aics/tests/corpus-audit-1791584618576889936/summary-policy-verification.json"
+  }
+}

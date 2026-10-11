@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "scope": "staged plugin startup; not native desktop acceptance",
+  "installed": false,
+  "enabled": false,
+  "desktop_chats_created": 0,
+  "files": 14,
+  "bytes": 39473,
+  "hooks": [
+    "PostToolUse",
+    "Stop",
+    "SessionStart"
+  ],
+  "mcp_tools": [
+    "confirm_desktop_handoff",
+    "enable_desktop",
+    "prepare_desktop_handoff"
+  ],
+  "rollout_path_optional": true
+}

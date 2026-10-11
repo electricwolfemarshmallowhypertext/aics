@@ -1,0 +1,40 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/desktop_relay.py\"",
+            "commandWindows": "\"E:/aics/.relay/mcp-venv/Scripts/python.exe\" -B \"${PLUGIN_ROOT}/desktop_relay.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/desktop_relay.py\"",
+            "commandWindows": "\"E:/aics/.relay/mcp-venv/Scripts/python.exe\" -B \"${PLUGIN_ROOT}/desktop_relay.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/desktop_relay.py\"",
+            "commandWindows": "\"E:/aics/.relay/mcp-venv/Scripts/python.exe\" -B \"${PLUGIN_ROOT}/desktop_relay.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

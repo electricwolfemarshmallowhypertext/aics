@@ -1,0 +1,13 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "aics_desktop": {
+      "type": "stdio",
+      "command": "E:/aics/.relay/mcp-venv/Scripts/python.exe",
+      "args": [
+        "-B",
+        "${PLUGIN_ROOT}/desktop_mcp.py"
+      ]
+    }
+  }
+}

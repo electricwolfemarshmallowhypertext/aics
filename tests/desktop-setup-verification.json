@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "scope": "configured Windows hook commands and MCP startup; not desktop transfer",
+  "desktop_chats_created": 0,
+  "model_sessions_started": 0,
+  "global_settings_changed": false,
+  "configured_hook_commands": [
+    "PostToolUse",
+    "Stop",
+    "SessionStart"
+  ],
+  "configured_mcp_tools": [
+    "enable_desktop",
+    "prepare_desktop_handoff",
+    "confirm_desktop_handoff"
+  ],
+  "disabled_session_writes_no_state": true
+}

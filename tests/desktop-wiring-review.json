@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "scope": "current package wiring and terminal preservation; not native desktop acceptance",
+  "desktop_acceptance_passed": false,
+  "installed": false,
+  "enabled": false,
+  "new_model_sessions": 0,
+  "desktop_chats_created": 0,
+  "adapter_regressions_passed": 14,
+  "terminal_sources_byte_unchanged": true,
+  "native_binary_size_and_mtime_unchanged": true,
+  "configured_hooks": [
+    "PostToolUse",
+    "Stop",
+    "SessionStart"
+  ],
+  "configured_mcp_tools": [
+    "confirm_desktop_handoff",
+    "enable_desktop",
+    "prepare_desktop_handoff"
+  ],
+  "onboarding_skill_and_hook_paths_resolve": true,
+  "marketplace_path_resolves": true,
+  "package_version": "0.1.1",
+  "package_files": 14,
+  "package_bytes": 41095
+}

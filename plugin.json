@@ -1,0 +1,12 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "aics-desktop",
+  "version": "0.1.1",
+  "description": "Carry unfinished work into a fresh native Codex desktop chat.",
+  "extensions": {
+    "com.openai": {
+      "hooks": "./hooks/hooks.json",
+      "onboardingSkill": "./skills/aics-desktop/SKILL.md"
+    }
+  }
+}

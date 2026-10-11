@@ -1,0 +1,58 @@
+{
+  "desktop_acceptance_passed": false,
+  "adapter_unit_checks": {
+    "passed": true,
+    "count": 14,
+    "command": "python -B tests/desktop_relay_test.py",
+    "summarizer_mocked": true
+  },
+  "real_stdio_mcp": {
+    "passed": true,
+    "tools": [
+      "enable_desktop",
+      "prepare_desktop_handoff",
+      "confirm_desktop_handoff"
+    ],
+    "unenabled_session_rejected": true
+  },
+  "existing_terminal_bridge_checks": {
+    "passed": true,
+    "count": 4,
+    "command": "python -B tests/native_relay_test.py"
+  },
+  "desktop_tasks_created": 0,
+  "plugin_installed": false,
+  "global_settings_changed": false,
+  "live_transition_test": "Not run: user restricted work to repository files.",
+  "static_audit": "DESKTOP-AUDIT.md",
+  "shared_relay_regressions": {
+    "passed": true,
+    "count": 6,
+    "command": "python -B tests/v2_test.py"
+  },
+  "real_backend_rehearsal": {
+    "original_run_passed": false,
+    "saved_session_confirmation_recovery_passed": true,
+    "original_report": "tests/desktop-backend-run-1791653898236122600/verification.json",
+    "recovery_report": "tests/desktop-backend-run-1791653898236122600/verification-recovery.json",
+    "clean_integrated_run_of_final_adapter": false,
+    "clean_integrated_report": "tests/desktop-backend-run-1791659357609412000/verification.json",
+    "desktop_acceptance_passed": false,
+    "last_clean_backend_run_passed": true,
+    "note": "Saved clean model run predates the latest trigger/instruction checks; current package checks are in desktop-wiring-review.json."
+  },
+  "configured_startup_checks": {
+    "passed": true,
+    "evidence": "tests/desktop-setup-verification.json",
+    "native_desktop_transfer_verified": false
+  },
+  "staged_package_checks": {
+    "passed": true,
+    "evidence": "tests/desktop-package-verification.json"
+  },
+  "latest_wiring_review": {
+    "passed": true,
+    "evidence": "tests/desktop-wiring-review.json",
+    "desktop_acceptance_passed": false
+  }
+}

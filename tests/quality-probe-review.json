@@ -1,0 +1,120 @@
+{
+  "evidence_checks_passed": true,
+  "quality_trigger_calibrated": false,
+  "inspected_receipts": 24,
+  "worker_quality_probe_records": 0,
+  "validated_audit_checkpoints": 376,
+  "summary_retries": 2,
+  "decision": "Leave the quality-probe trigger open and disabled. Keep the existing occupancy trigger.",
+  "issue": "The corpus contains no worker probe scores paired with independently graded worker correctness, so it cannot calibrate a quality trigger.",
+  "excluded_as_worker_degradation_labels": [
+    "Summary verification retries concern a separate summarizer.",
+    "Early task exits establish incomplete work, not context-caused degradation.",
+    "Final valid checkpoints are not time-aligned measurements of worker quality at each receipt."
+  ],
+  "required_next_evidence": "Define a task-checkable probe, record its result and occupancy in the same worker context, and grade correct and incorrect cases before choosing a relay rule.",
+  "runs": [
+    {
+      "workspace": "/mnt/e/aics/tests/live-relay-run-1791578191868102639",
+      "task_status": "completed_task_relays",
+      "real_receipts": 1,
+      "summary_retries": 0,
+      "validated_audit_checkpoints": 24,
+      "unfinished_audit_items": 0,
+      "checkpoint_validation_errors": []
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/live-relay-run-1791582007301553172",
+      "task_status": "completed_task_relays",
+      "real_receipts": 1,
+      "summary_retries": 0,
+      "validated_audit_checkpoints": 24,
+      "unfinished_audit_items": 0,
+      "checkpoint_validation_errors": []
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791582742555285046",
+      "task_status": "completed_task_relays",
+      "real_receipts": 2,
+      "summary_retries": 0,
+      "validated_audit_checkpoints": 32,
+      "unfinished_audit_items": 0,
+      "checkpoint_validation_errors": []
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791583315689242745",
+      "task_status": "completed_task_relays",
+      "real_receipts": 1,
+      "summary_retries": 0,
+      "validated_audit_checkpoints": 32,
+      "unfinished_audit_items": 0,
+      "checkpoint_validation_errors": []
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791583397575616297",
+      "task_status": "completed_task_relays",
+      "real_receipts": 2,
+      "summary_retries": 1,
+      "validated_audit_checkpoints": 32,
+      "unfinished_audit_items": 0,
+      "checkpoint_validation_errors": []
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791583523914242721",
+      "task_status": "completed_task_relays",
+      "real_receipts": 2,
+      "summary_retries": 0,
+      "validated_audit_checkpoints": 32,
+      "unfinished_audit_items": 0,
+      "checkpoint_validation_errors": []
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791583816879346261",
+      "task_status": "failed_task_relays",
+      "real_receipts": 2,
+      "summary_retries": 0,
+      "validated_audit_checkpoints": 35,
+      "unfinished_audit_items": 29,
+      "checkpoint_validation_errors": []
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791583817192364104",
+      "task_status": "failed_task_relays",
+      "real_receipts": 3,
+      "summary_retries": 1,
+      "validated_audit_checkpoints": 53,
+      "unfinished_audit_items": 11,
+      "checkpoint_validation_errors": []
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791583909153404268",
+      "task_status": "completed_task_relays",
+      "real_receipts": 3,
+      "summary_retries": 0,
+      "validated_audit_checkpoints": 48,
+      "unfinished_audit_items": 0,
+      "checkpoint_validation_errors": []
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-audit-1791584618576889936",
+      "task_status": "completed_task_relays",
+      "real_receipts": 3,
+      "summary_retries": 0,
+      "validated_audit_checkpoints": 64,
+      "unfinished_audit_items": 0,
+      "checkpoint_validation_errors": []
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-bugfix-1791582743618492668",
+      "task_status": "failed_task_relays",
+      "real_receipts": 2,
+      "summary_retries": 0
+    },
+    {
+      "workspace": "/mnt/e/aics/tests/corpus-feature-1791582743356991678",
+      "task_status": "completed_task_relays",
+      "real_receipts": 2,
+      "summary_retries": 0
+    }
+  ]
+}
