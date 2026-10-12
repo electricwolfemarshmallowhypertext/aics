@@ -143,9 +143,9 @@ class DesktopTests(unittest.TestCase):
         self.assertEqual(result['outcome'], 'relay_started')
 
     def test_large_cumulative_counter_does_not_trigger(self):
-        self.enable()
         self.events[-1]['payload']['info']['last_token_usage']['total_tokens'] = 10000
         self.rollout.write_text(''.join(json.dumps(e)+'\n' for e in self.events), encoding='utf-8')
+        self.enable()
         self.assertEqual(desktop.hook(self.event), {})
 
     def test_bad_handoff_does_not_create_transfer_receipt(self):
@@ -172,13 +172,130 @@ class DesktopTests(unittest.TestCase):
             desktop.confirm(self.root, 'source', 'replacement', replacement)
         self.assertFalse((self.root / 'receipts.jsonl').exists())
         records[1]['payload']['content'][0]['text'] = prepared['prompt'].replace('\n', '\r\n')
-        replacement.write_text(''.join(json.dumps(e)+'\n' for e in records))
+        with replacement.open('a') as file:
+            file.write(json.dumps(records[1])+'\n')
         with patch.object(desktop.receipts, 'RECEIPTS_PATH', self.root / 'receipts.jsonl'):
             result = desktop.confirm(self.root, 'source', 'replacement', replacement)
             self.assertEqual(desktop.confirm(self.root, 'source', 'replacement', replacement), result)
         self.assertEqual(result['outcome'], 'relay_started')
         self.assertEqual(len((self.root / 'receipts.jsonl').read_text().splitlines()), 1)
         self.assertTrue((desktop.session_dir(self.root, 'replacement') / 'enabled.json').exists())
+
+
+    def context(self, session='source', rollout=None):
+        return desktop.read_context(rollout or self.rollout, session, self.root,
+                                    desktop.session_dir(self.root, session), desktop.user_messages)
+
+    def append(self, event):
+        raw = (json.dumps(event) + '\n').encode('utf-8')
+        with self.rollout.open('ab') as file:
+            file.write(raw)
+        return len(raw)
+
+    def test_initial_read_once_then_only_new_records_across_hooks(self):
+        self.events[-1]['payload']['info']['last_token_usage']['total_tokens'] = 10000
+        self.rollout.write_text(''.join(json.dumps(e)+'\n' for e in self.events), encoding='utf-8')
+        self.enable()
+        first = self.context()
+        self.assertEqual(first['total_read_bytes'], self.rollout.stat().st_size)
+        self.assertEqual(first['records_processed'], 3)
+        for _ in range(3):
+            self.assertEqual(desktop.hook(self.event), {})
+        unchanged = self.context()
+        self.assertEqual(unchanged['total_read_bytes'], first['total_read_bytes'])
+        self.assertEqual(unchanged['records_processed'], 3)
+        added = self.append({'type': 'response_item', 'payload': {'type': 'message', 'role': 'user',
+                             'content': [{'text': 'Keep the database intact.'}]}})
+        state = self.context()
+        self.assertEqual(state['last_read_bytes'], added)
+        self.assertEqual(state['total_read_bytes'], first['total_read_bytes'] + added)
+        self.assertEqual(state['records_processed'], 4)
+        self.assertEqual(state['messages'].count('Keep the database intact.'), 1)
+        self.assertEqual(self.context()['messages'], state['messages'])
+
+    def test_cursor_survives_a_new_process(self):
+        import subprocess
+        first = self.context()
+        added = self.append({'type': 'event_msg', 'payload': {'type': 'token_count', 'info': {
+            'model_context_window': 100000, 'last_token_usage': {'total_tokens': 80000}}}})
+        script = ("import sys,json; sys.path.insert(0," + repr(str(Path(desktop.__file__).parent)) + "); "
+                  "import desktop_relay as d; r=" + repr(str(self.root)) + "; "
+                  "print(json.dumps(d.read_context(" + repr(str(self.rollout)) + ", 'source', r, d.session_dir(r,'source'), d.user_messages)))")
+        result = subprocess.run([sys.executable, '-B', '-c', script], capture_output=True, text=True, check=True, timeout=10)
+        state = json.loads(result.stdout)
+        self.assertEqual(state['last_read_bytes'], added)
+        self.assertEqual(state['total_read_bytes'], first['total_read_bytes'] + added)
+        self.assertEqual(state['usage']['occupancy'], 80000)
+
+    def test_partial_utf8_record_is_retained_until_complete(self):
+        self.context()
+        raw = (json.dumps({'type': 'response_item', 'payload': {'type': 'message', 'role': 'user',
+                           'content': [{'text': 'Preserve '+chr(0x03bb)}]}}, ensure_ascii=False) + '\n').encode('utf-8')
+        split = raw.index(chr(0x03bb).encode('utf-8')) + 1
+        with self.rollout.open('ab') as file:
+            file.write(raw[:split])
+        before = self.context()
+        self.assertEqual(before['records_processed'], 3)
+        with self.rollout.open('ab') as file:
+            file.write(raw[split:])
+        after = self.context()
+        self.assertEqual(after['records_processed'], 4)
+        self.assertIn('Preserve '+chr(0x03bb), after['messages'])
+
+    def test_replaced_or_truncated_rollout_is_not_silently_reloaded(self):
+        self.context()
+        self.rollout.write_text('{}\n')
+        with self.assertRaisesRegex(ValueError, 'truncated'):
+            self.context()
+
+    def test_saved_handoff_reuses_context_without_another_summary(self):
+        prepared = self.prepare()
+        before = self.context()
+        with patch.object(desktop, 'build_handoff', side_effect=AssertionError('Repeated summary')):
+            self.assertEqual(desktop.prepare(self.root, 'source'), prepared)
+            self.assertEqual(desktop.prepare(self.root, 'source'), prepared)
+        after = self.context()
+        self.assertEqual(after['total_read_bytes'], before['total_read_bytes'])
+        self.assertEqual(after['records_processed'], before['records_processed'])
+
+    def test_summary_receives_retained_tail_not_original_rollout(self):
+        self.enable()
+        desktop.hook(self.event)
+        handoff = self.root / 'HANDOFF.md'
+        handoff.write_text('# HANDOFF\n## Goal\nFinish\n## Ordered queue of remaining items\n1. Finish\n## Constraints (never violate)\nPreserve API\n')
+        with patch.object(desktop, 'build_handoff', return_value=handoff) as summarizer:
+            desktop.prepare(self.root, 'source')
+        supplied = Path(summarizer.call_args.args[0])
+        self.assertNotEqual(supplied, self.rollout)
+        self.assertEqual(supplied.name, 'context-tail.jsonl')
+        self.assertIn('preserve the public API', supplied.read_text())
+
+    def test_old_tail_is_bounded_without_losing_user_instructions(self):
+        self.context()
+        for index in range(4):
+            self.append({'type': 'response_item', 'payload': {'type': 'function_call_output', 'output': str(index)*100}})
+        with patch.object(desktop.config, 'TRANSCRIPT_TAIL_CHARS', 240):
+            state = self.context()
+        self.assertLessEqual(len(('\n'.join(state['tail'])+'\n').encode()), 240)
+        self.assertIn('preserve the public API', state['messages'][0])
+
+
+    def test_overlapping_processes_do_not_repeat_appended_records(self):
+        import subprocess
+        first = self.context()
+        added = self.append({'type': 'response_item', 'payload': {'type': 'message', 'role': 'user',
+                             'content': [{'text': 'One new instruction.'}]}})
+        script = ("import sys,json; sys.path.insert(0," + repr(str(Path(desktop.__file__).parent)) + "); "
+                  "import desktop_relay as d; r=" + repr(str(self.root)) + "; "
+                  "print(json.dumps(d.read_context(" + repr(str(self.rollout)) + ", 'source', r, d.session_dir(r,'source'), d.user_messages)))")
+        processes = [subprocess.Popen([sys.executable, '-B', '-c', script], stdout=subprocess.PIPE, stderr=subprocess.PIPE) for _ in range(2)]
+        for process in processes:
+            out, err = process.communicate(timeout=10)
+            self.assertEqual(process.returncode, 0, err)
+        state = self.context()
+        self.assertEqual(state['total_read_bytes'], first['total_read_bytes'] + added)
+        self.assertEqual(state['records_processed'], 4)
+        self.assertEqual(state['messages'].count('One new instruction.'), 1)
 
 
 if __name__ == '__main__':

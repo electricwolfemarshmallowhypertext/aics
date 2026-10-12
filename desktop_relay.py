@@ -7,7 +7,7 @@ import sys
 import config
 from handoff import atomic_write, boot_prompt, build_handoff
 from handoff_check import verify, verification_scope
-from native_relay import inspect, source_events
+from desktop_context import read_context
 import receipts
 
 NOTICE = 'AICS_DESKTOP_HANDOFF: '
@@ -25,8 +25,8 @@ def user_messages(events):
     return messages
 
 
-def messages_hash(events):
-    return hashlib.sha256(json.dumps(user_messages(events), ensure_ascii=False).encode('utf-8')).hexdigest()
+def messages_hash(messages):
+    return hashlib.sha256(json.dumps(messages, ensure_ascii=False).encode('utf-8')).hexdigest()
 
 
 def session_dir(cwd, session_id):
@@ -36,7 +36,8 @@ def session_dir(cwd, session_id):
 
 
 def enable(cwd, session_id, rollout, project_id, model):
-    if not source_events(rollout, session_id, cwd):
+    directory = session_dir(cwd, session_id)
+    if not read_context(rollout, session_id, cwd, directory, user_messages):
         raise ValueError('Source rollout metadata is not available')
     if not project_id or not model:
         raise ValueError('Desktop project and model are required')
@@ -67,9 +68,12 @@ def hook(event):
         rollout = event.get('transcript_path')
         if not rollout:
             return {}
-        measurement = inspect(rollout, session_id, root)
-        if not measurement['fire']:
+        state = read_context(rollout, session_id, root, directory, user_messages)
+        usage = state['usage'] if state else None
+        if not usage or usage['occupancy'] / usage['window'] < config.THRESHOLD:
             return {}
+        measurement = {'fire': True, 'session_id': session_id, 'session_rollout': str(rollout),
+                       **usage, 'utilization': usage['occupancy'] / usage['window'], 'trigger_reason': 'occupancy'}
         atomic_write(pending, json.dumps({'rollout': rollout, 'measurement': measurement}))
     boundary = 'The current turn has finished' if event['hook_event_name'] == 'Stop' else 'The current tool operation has finished'
     instruction = (NOTICE + boundary + ' and the configured context threshold was reached. '
@@ -87,21 +91,19 @@ def prepare(cwd, session_id):
     settings = json.loads((directory / 'enabled.json').read_text(encoding='utf-8'))
     pending = json.loads((directory / 'pending.json').read_text(encoding='utf-8'))
     measurement = pending['measurement']
-    events = source_events(pending['rollout'], session_id, root)
+    state = read_context(pending['rollout'], session_id, root, directory, user_messages)
     if (measurement['session_id'] != session_id or not measurement.get('fire')
             or measurement['occupancy'] / measurement['window'] < config.THRESHOLD):
         raise ValueError('Invalid desktop trigger measurement')
-    if not any(event.get('payload', {}).get('type') == 'token_count'
-               and ((event['payload'].get('info') or {}).get('last_token_usage') or {}).get('total_tokens') == measurement['occupancy']
-               and (event['payload'].get('info') or {}).get('model_context_window') == measurement['window'] for event in events):
+    if not state or [measurement['occupancy'], measurement['window']] not in state['snapshots']:
         raise ValueError('Desktop trigger snapshot missing from source rollout')
-    messages = user_messages(events)
+    messages = state['messages']
     inherited = directory / 'goal.txt'
     goal = inherited.read_text(encoding='utf-8') if inherited.exists() else ''
     goal = '\n\n'.join([goal, *messages]).strip()
     if not goal:
         raise ValueError('No original user goal is available')
-    messages_sha256 = messages_hash(events)
+    messages_sha256 = messages_hash(messages)
     prepared = directory / 'prepared.json'
     if prepared.exists():
         result = json.loads(prepared.read_text(encoding='utf-8'))
@@ -110,9 +112,11 @@ def prepare(cwd, session_id):
         if result.get('source_messages_sha256') != messages_sha256:
             raise ValueError('Source instructions changed or preparation is from an older adapter; refusing the cached handoff')
         return result
+    transcript = directory / 'context-tail.jsonl'
+    atomic_write(transcript, '\n'.join(state['tail']) + '\n')
     errors = []
     for attempt in (1, 2):
-        handoff = build_handoff(pending['rollout'], root, goal, output_dir=directory, timeout=120)
+        handoff = build_handoff(transcript, root, goal, output_dir=directory, timeout=120)
         errors = verify(handoff, root)
         if not errors:
             break
@@ -143,11 +147,9 @@ def confirm(cwd, source_session_id, replacement_session_id, replacement_rollout)
     prepared = json.loads((directory / 'prepared.json').read_text(encoding='utf-8'))
     if hashlib.sha256(Path(prepared['handoff']).read_bytes()).hexdigest() != prepared.get('handoff_sha256'):
         raise ValueError('Handoff changed after preparation')
-    events = source_events(replacement_rollout, replacement_session_id, root)
-    supplied = [part.get('text', '') for event in events
-                if event.get('type') == 'response_item'
-                and event.get('payload', {}).get('role') == 'user'
-                for part in event['payload'].get('content', []) if isinstance(part, dict)]
+    target = session_dir(root, replacement_session_id)
+    state = read_context(replacement_rollout, replacement_session_id, root, target, user_messages)
+    supplied = state['continuation_prompts'] if state else []
     if prepared['prompt'].replace('\r\n', '\n') not in [text.replace('\r\n', '\n') for text in supplied]:
         raise ValueError('Replacement rollout does not contain the verified continuation prompt')
     if (directory / 'confirmed.json').exists():
@@ -155,10 +157,9 @@ def confirm(cwd, source_session_id, replacement_session_id, replacement_rollout)
         if previous['replacement_session_id'] != replacement_session_id:
             raise ValueError('Source already transferred to another thread')
         return previous
-    source = source_events(prepared['measurement']['session_rollout'], source_session_id, root)
-    if messages_hash(source) != prepared.get('source_messages_sha256'):
+    source = read_context(prepared['measurement']['session_rollout'], source_session_id, root, directory, user_messages)
+    if not source or messages_hash(source['messages']) != prepared.get('source_messages_sha256'):
         raise ValueError('Source instructions changed or preparation is from an older adapter; refusing confirmation')
-    target = session_dir(root, replacement_session_id)
     atomic_write(target / 'goal.txt', (directory / 'goal.txt').read_text(encoding='utf-8'))
     atomic_write(target / 'enabled.json', (directory / 'enabled.json').read_text(encoding='utf-8'))
     receipt = {**prepared['measurement'], 'desktop': True, 'handoff': prepared['handoff'],

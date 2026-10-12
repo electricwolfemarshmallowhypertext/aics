@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "scope": "incremental desktop reads, fixture summary reuse and actual staged hook/MCP commands; not native rollover",
+  "desktop_acceptance_passed": false,
+  "model_calls": 0,
+  "desktop_chats_created": 0,
+  "initial_rollout_bytes": 392,
+  "appended_rollout_bytes": 145,
+  "total_rollout_content_bytes_read": 537,
+  "records_processed": 4,
+  "unchanged_checks_reprocessed_records": 0,
+  "cached_prepare_calls": 2,
+  "boundary_check": "64 previously read bytes checked per read for append-only integrity; no previous records reparsed",
+  "terminal_source_hashes_unchanged": true,
+  "adapter_checks_passed": 22,
+  "package_version": "0.1.2",
+  "package_files": 15,
+  "token_savings_measured": false
+}

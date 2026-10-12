@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parent
 FILES = (
     'plugin.json', 'mcp.json', 'hooks/hooks.json',
     'skills/aics-desktop/SKILL.md', 'requirements-mcp.txt',
-    'desktop_mcp.py', 'desktop_relay.py', 'config.py', 'handoff.py',
+    'desktop_mcp.py', 'desktop_relay.py', 'desktop_context.py', 'config.py', 'handoff.py',
     'handoff_check.py', 'native_relay.py', 'tailer.py', 'receipts.py',
     'process_control.py',
 )
